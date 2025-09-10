@@ -3697,6 +3697,9 @@ class PomoticaApp {
         if (!bar || !txt || !prog || !btn || !window.electron) return;
 
         const setVisible = (v) => { bar.style.display = v ? 'block' : 'none'; };
+        if (window.__updaterReady) {
+            txt.textContent = 'Atualizador conectado.';
+        }
         btn.onclick = async () => {
             try {
                 setVisible(true);
