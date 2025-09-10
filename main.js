@@ -2,6 +2,10 @@ const { app, BrowserWindow, Tray, Menu, ipcMain, nativeImage, dialog } = require
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
+const os = require('os');
+const { shell } = require('electron');
 
 let tray = null;
 let mainWindow = null;
@@ -87,6 +91,35 @@ function setupAutoUpdate() {
   });
 }
 
+async function fetchJson(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'Pomotica-Updater' } }, (res) => {
+      if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
+      let data = '';
+      res.on('data', (d) => data += d);
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch (e) { reject(e); } });
+    }).on('error', reject);
+  });
+}
+
+async function downloadFile(url, dest, onProgress) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'Pomotica-Updater' } }, (res) => {
+      if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
+      const total = parseInt(res.headers['content-length'] || '0', 10);
+      let received = 0;
+      const file = fs.createWriteStream(dest);
+      res.on('data', (chunk) => {
+        received += chunk.length;
+        if (onProgress && total) onProgress(Math.round((received / total) * 100));
+      });
+      res.pipe(file);
+      file.on('finish', () => file.close(() => resolve(dest)));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
 // IPC para controle manual a partir do renderer
 ipcMain.handle('update-check', async () => {
   try {
@@ -100,6 +133,27 @@ ipcMain.handle('update-check', async () => {
   }
 });
 ipcMain.handle('update-install', async () => { try { autoUpdater.quitAndInstall(); return true; } catch { return false; } });
+ipcMain.handle('fallback-update', async () => {
+  try {
+    sendUpdateStatus({ type: 'checking' });
+    const api = await fetchJson('https://api.github.com/repos/guilhermeaqw/Pomotica-Software/releases/latest');
+    const asset = (api.assets || []).find(a => /\.exe$/i.test(a.name));
+    if (!asset) {
+      sendUpdateStatus({ type: 'error', message: 'Nenhum instalador encontrado na última release.' });
+      return false;
+    }
+    const tmp = path.join(os.tmpdir(), asset.name);
+    sendUpdateStatus({ type: 'available' });
+    await downloadFile(asset.browser_download_url, tmp, (p) => sendUpdateStatus({ type: 'progress', percent: p }));
+    sendUpdateStatus({ type: 'downloaded' });
+    // Abrir instalador; o usuário confirma a instalação
+    shell.openPath(tmp);
+    return true;
+  } catch (e) {
+    sendUpdateStatus({ type: 'error', message: String(e && e.message || e) });
+    return false;
+  }
+});
 
 app.whenReady().then(() => {
   createWindow();

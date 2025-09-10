@@ -1,6 +1,6 @@
 {
   "name": "Pomotica",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Pomotica - App desktop",
   "main": "main.js",
   "author": "Guinogue",
@@ -17,41 +17,12 @@
     "appId": "com.pomotica.app",
     "productName": "Pomotica",
     "publish": [
-      {
-        "provider": "github",
-        "owner": "guilhermeaqw",
-        "repo": "Pomotica-Software"
-      }
+      {"provider": "github", "owner": "guilhermeaqw", "repo": "Pomotica-Software"}
     ],
-    "directories": {
-      "buildResources": "build"
-    },
-    "files": [
-      "index.html",
-      "styles-base.css",
-      "themes.css",
-      "script.js",
-      "main.js",
-      "preload.js",
-      "manifest.webmanifest",
-      "service-worker.js"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "perMachine": false
-    }
+    "directories": {"buildResources": "build"},
+    "files": ["index.html","styles-base.css","themes.css","script.js","main.js","preload.js","manifest.webmanifest","service-worker.js"],
+    "win": {"target": [{"target": "nsis", "arch": ["x64", "ia32"]}]},
+    "nsis": {"oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false}
   },
   "dependencies": {
     "electron-log": "^5.4.3",

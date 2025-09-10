@@ -3706,12 +3706,24 @@ class PomoticaApp {
                 txt.textContent = 'Procurando atualizações…';
                 prog.style.width = '0%';
                 if (window.electron && window.electron.checkForUpdates) {
-                    await window.electron.checkForUpdates();
+                    const ok = await window.electron.checkForUpdates();
+                    // Se falhar, cair para fallback
+                    if (!ok && window.electron.fallbackUpdate) {
+                        txt.textContent = 'Baixando instalador…';
+                        await window.electron.fallbackUpdate();
+                    }
+                } else if (window.electron && window.electron.fallbackUpdate) {
+                    txt.textContent = 'Baixando instalador…';
+                    await window.electron.fallbackUpdate();
                 } else {
                     txt.textContent = 'Atualizador indisponível.';
                 }
             } catch {
-                txt.textContent = 'Falha ao verificar atualizações.';
+                txt.textContent = 'Falha ao verificar/baixar atualização.';
+                if (window.electron && window.electron.fallbackUpdate) {
+                    txt.textContent = 'Baixando instalador…';
+                    await window.electron.fallbackUpdate();
+                }
             }
         };
 
