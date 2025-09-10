@@ -1,0 +1,19 @@
+{
+  "name": "Pomotica",
+  "short_name": "Pomotica",
+  "description": "Produtividade criativa com Pomodoro, projetos e conquistas.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f0f23",
+  "theme_color": "#0f0f23",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

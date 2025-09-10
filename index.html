@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomotica - Produtividade Criativa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="themes.css">
+    <link rel="stylesheet" href="styles-base.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0f0f23">
+    <script>
+        // Aplicar tema imediatamente para evitar flash branco
+        (function() {
+            const savedTheme = localStorage.getItem('pomotica-theme') || 'night';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-diamond"></i>
+                    <span>Pomotica</span>
+                </div>
+                <p class="sidebar-subtitle">Seu espaço criativo</p>
+                
+                <div class="sidebar-profile">
+                    <img id="sidebar-avatar" src="" alt="Usuário" class="sidebar-avatar">
+                    <div class="sidebar-user-info">
+                        <span id="sidebar-username" class="sidebar-username">Nome de usuário</span>
+                        <span id="sidebar-user-role" class="sidebar-user-role"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Principal</div>
+                    <button class="nav-item active" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-tab="timer">
+                        <i class="fas fa-clock"></i>
+                        <span>Pomodoro</span>
+                    </button>
+                    <button class="nav-item" data-tab="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projetos</span>
+                    </button>
+                    <button class="nav-item" data-tab="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </button>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Sistema</div>
+                    <button class="nav-item" data-tab="updates">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Atualizações</span>
+                    </button>
+                    <button class="nav-item" data-tab="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Configurações</span>
+                    </button>
+                    <button class="nav-item" data-tab="credits">
+                        <i class="fas fa-heart"></i>
+                        <span>Créditos</span>
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="theme-selector">
+                    <div class="theme-selector-title">Temas</div>
+                    <div class="theme-buttons">
+                        <button class="theme-btn" data-theme="aurora" title="🌅 Crepúsculo">
+                            <div class="theme-preview aurora-preview"></div>
+                            <span>🌅</span>
+                        </button>
+                        <button class="theme-btn" data-theme="ocean" title="🌊 Oceano">
+                            <div class="theme-preview ocean-preview"></div>
+                            <span>🌊</span>
+                        </button>
+                        <button class="theme-btn" data-theme="sakura" title="🌸 Sakura">
+                            <div class="theme-preview sakura-preview"></div>
+                            <span>🌸</span>
+                        </button>
+                        <button class="theme-btn" data-theme="moon" title="🌙 Meia-Noite">
+                            <div class="theme-preview moon-preview"></div>
+                            <span>🌙</span>
+                        </button>
+                        <button class="theme-btn" data-theme="sunset" title="🌅 Pôr do Sol">
+                            <div class="theme-preview sunset-preview"></div>
+                            <span>🌅</span>
+                        </button>
+                        <button class="theme-btn" data-theme="night" title="🌌 Noite Estrelada">
+                            <div class="theme-preview night-preview"></div>
+                            <span>🌌</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <!-- Header com Metas Diárias -->
+                <div class="dashboard-header">
+                    <div class="daily-goals">
+                        <h2><i class="fas fa-bullseye"></i> Metas de Hoje</h2>
+                        <div class="goals-grid">
+                            <div class="goal-card">
+                                <div class="goal-icon">🍅</div>
+                                <div class="goal-info">
+                                    <span class="goal-label">Pomodoros</span>
+                                    <div class="goal-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="pomodoro-progress"></div>
+                                        </div>
+                                        <span class="goal-text" id="pomodoro-goal">0/4</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="goal-card">
+                                <div class="goal-icon">✅</div>
+                                <div class="goal-info">
+                                    <span class="goal-label">Tarefas</span>
+                                    <div class="goal-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="tasks-progress"></div>
+                                        </div>
+                                        <span class="goal-text" id="tasks-goal">0/5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="goal-card">
+                                <div class="goal-icon">⏱️</div>
+                                <div class="goal-info">
+                                    <span class="goal-label">Foco (min)</span>
+                                    <div class="goal-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="focus-progress"></div>
+                                        </div>
+                                        <span class="goal-text" id="focus-goal">0/120</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estatísticas Principais -->
+                <div class="stats-grid">
+                    <div class="stat-card animated">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-content">
+                            <h3>Tempo Total Focado</h3>
+                            <div class="stat-value" id="focused-time">0h 0m</div>
+                            <div class="stat-change" id="focus-change">+0h hoje</div>
+                        </div>
+                    </div>
+                    <div class="stat-card animated">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3>Tarefas Concluídas</h3>
+                            <div class="stat-value" id="completed-tasks">0</div>
+                            <div class="stat-change" id="tasks-change">+0 hoje</div>
+                        </div>
+                    </div>
+                    <div class="stat-card animated">
+                        <div class="stat-icon">🍅</div>
+                        <div class="stat-content">
+                            <h3>Sessões Pomodoro</h3>
+                            <div class="stat-value" id="pomodoro-sessions">0</div>
+                            <div class="stat-change" id="pomodoro-change">+0 hoje</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos e Visualizações -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-line"></i> Produtividade Semanal</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" data-period="week">Semana</button>
+                                <button class="chart-btn" data-period="month">Mês</button>
+                            </div>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="productivity-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-pie"></i> Status das Tarefas</h3>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="tasks-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparação de Períodos -->
+                <div class="comparison-section">
+                    <div class="comparison-header">
+                        <h3><i class="fas fa-balance-scale"></i> Comparação de Períodos</h3>
+                        <div class="comparison-controls">
+                            <button class="comparison-btn active" data-comparison="week">Esta Semana vs Semana Passada</button>
+                            <button class="comparison-btn" data-comparison="month">Este Mês vs Mês Passado</button>
+                        </div>
+                    </div>
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <div class="comparison-period">
+                                <h4 id="current-period-title">Esta Semana</h4>
+                                <div class="period-date" id="current-period-date">Jan 15-21, 2024</div>
+                            </div>
+                            <div class="comparison-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Tempo Focado</span>
+                                    <span class="stat-value" id="current-focus-time">0h 0m</span>
+                                    <span class="stat-change" id="focus-change">+0h hoje</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Tarefas Concluídas</span>
+                                    <span class="stat-value" id="current-tasks">0</span>
+                                    <span class="stat-change" id="tasks-change">+0 hoje</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Pomodoros</span>
+                                    <span class="stat-value" id="current-pomodoros">0</span>
+                                    <span class="stat-change" id="pomodoros-change">+0 hoje</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comparison-card">
+                            <div class="comparison-period">
+                                <h4 id="previous-period-title">Semana Passada</h4>
+                                <div class="period-date" id="previous-period-date">Jan 8-14, 2024</div>
+                            </div>
+                            <div class="comparison-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Tempo Focado</span>
+                                    <span class="stat-value" id="previous-focus-time">0h 0m</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Tarefas Concluídas</span>
+                                    <span class="stat-value" id="previous-tasks">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Pomodoros</span>
+                                    <span class="stat-value" id="previous-pomodoros">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-summary">
+                        <div class="summary-insight" id="comparison-insight">
+                            <i class="fas fa-trending-up"></i>
+                            <span>Você está <strong>15% mais produtivo</strong> esta semana!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sistema de XP -->
+                <div class="xp-section">
+                    <div class="xp-header">
+                        <div class="xp-info">
+                            <h3><i class="fas fa-star"></i> Level</h3>
+                            <div class="xp-level">
+                                <span class="level-text">Nível</span>
+                                <span class="level-number" id="current-level">1</span>
+                            </div>
+                        </div>
+                        <div class="xp-stats">
+                            <div class="xp-total">
+                                <span class="xp-label">XP Total</span>
+                                <span class="xp-value" id="total-xp">0</span>
+                            </div>
+                            <div class="xp-next">
+                                <span class="xp-label">Próximo Nível</span>
+                                <span class="xp-value" id="next-level-xp">100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xp-progress-container">
+                        <div class="xp-progress-bar">
+                            <div class="xp-progress-fill" id="xp-progress-fill"></div>
+                        </div>
+                        <div class="xp-progress-text" id="xp-progress-text">0 / 100 XP</div>
+                    </div>
+                    <div class="xp-recent">
+                        <h4><i class="fas fa-bolt"></i> XP Recente</h4>
+                        <div class="xp-activities" id="xp-activities">
+                            <!-- Atividades de XP serão inseridas aqui -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conquistas e Badges -->
+                <div class="achievements-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-trophy"></i> Conquistas</h3>
+                        <div class="achievement-count" id="achievement-count">0/11</div>
+                    </div>
+                    <div class="achievements-grid" id="achievements-grid">
+                        <!-- Badges serão inseridos aqui dinamicamente -->
+                    </div>
+                </div>
+
+
+                <!-- Próximas Ações -->
+                <div class="upcoming-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-alt"></i> Próximas Ações</h3>
+                        <button class="add-quick-task" onclick="showAddTaskModal()">
+                            <i class="fas fa-plus"></i> Tarefa Rápida
+                        </button>
+                    </div>
+                    <div class="upcoming-tasks" id="upcoming-tasks">
+                        <!-- Tarefas serão inseridas aqui dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timer Tab -->
+            <div class="tab-content" id="timer">
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <div class="time-circle">
+                            <div class="time-text" id="timer-display">25:00</div>
+                            <div class="timer-label" id="timer-label">Trabalho</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <button class="timer-btn primary" id="start-btn">
+                            <i class="fas fa-play"></i> Iniciar
+                        </button>
+                        <button class="timer-btn secondary" id="pause-btn" disabled>
+                            <i class="fas fa-pause"></i> Pausar
+                        </button>
+                        <button class="timer-btn danger" id="reset-btn">
+                            <i class="fas fa-redo"></i> Resetar
+                        </button>
+                    </div>
+                    
+                    <div class="timer-settings">
+                        <div class="setting-group">
+                            <label>Trabalho (min):</label>
+                            <input type="number" id="work-time" value="25" min="1" max="60">
+                        </div>
+                        <div class="setting-group">
+                            <label>Pausa (min):</label>
+                            <input type="number" id="break-time" value="5" min="1" max="30">
+                        </div>
+                        <div class="setting-group">
+                            <label>Pausa Longa (min):</label>
+                            <input type="number" id="long-break-time" value="15" min="5" max="60">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div class="tab-content" id="projects">
+                <div class="pomotica-board">
+                    <!-- Pomotica Header -->
+                    <div class="pomotica-header">
+                        <div class="header-content">
+                            <h1>Quadro Principal</h1>
+                            <button class="create-project-btn" onclick="showAddProjectModal()">
+                                <i class="fas fa-plus"></i> Criar projeto
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pomotica Board -->
+                    <div class="pomotica-board-content">
+                        <div class="projects-groups" id="projects-list">
+                            <!-- Projetos e tarefas serão inseridos aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <div class="settings-container">
+                    <div class="settings-header">
+                        <h2><i class="fas fa-cog"></i> Configurações</h2>
+                        <p>Personalize sua experiência no Pomotica</p>
+                    </div>
+
+                    <div class="settings-sections">
+                        <!-- Aparência -->
+                        <div class="settings-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-palette"></i> Aparência</h3>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="setting-item full-width">
+                                    <label>Tema Atual</label>
+                                    <div class="current-theme-display">
+                                        <span id="current-theme-name">Padrão</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item full-width">
+                                    <label>Selecionar Tema</label>
+                                    <div class="themes-grid">
+                                        <div class="theme-option" data-theme="aurora" onclick="app.selectTheme('aurora')">
+                                            <div class="theme-preview aurora-preview">
+                                                <span>🌅</span>
+                                            </div>
+                                            <span class="theme-name">Crepúsculo</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="ocean" onclick="app.selectTheme('ocean')">
+                                            <div class="theme-preview ocean-preview">
+                                                <span>🌊</span>
+                                            </div>
+                                            <span class="theme-name">Oceano</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="sakura" onclick="app.selectTheme('sakura')">
+                                            <div class="theme-preview sakura-preview">
+                                                <span>🌸</span>
+                                            </div>
+                                            <span class="theme-name">Sakura</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="moon" onclick="app.selectTheme('moon')">
+                                            <div class="theme-preview moon-preview">
+                                                <span>🌙</span>
+                                            </div>
+                                            <span class="theme-name">Meia-Noite</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="sunset" onclick="app.selectTheme('sunset')">
+                                            <div class="theme-preview sunset-preview">
+                                                <span>🌅</span>
+                                            </div>
+                                            <span class="theme-name">Por do Sol</span>
+                                        </div>
+                                        <div class="theme-option" data-theme="night" onclick="app.selectTheme('night')">
+                                            <div class="theme-preview night-preview">
+                                                <span>🌌</span>
+                                            </div>
+                                            <span class="theme-name">Noite Estrelada</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Notificações -->
+                        <div class="settings-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-bell"></i> Notificações</h3>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label>Som de Conclusão de Tarefa</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="task-completion-sound" checked>
+                                        <label for="task-completion-sound" class="toggle-label">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Notificações do Pomodoro</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="pomodoro-notifications" checked>
+                                        <label for="pomodoro-notifications" class="toggle-label">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Volume das Notificações</label>
+                                    <div class="volume-control">
+                                        <input type="range" id="notification-volume" min="0" max="100" value="50">
+                                        <span id="volume-display">50%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Confirmar Exclusão de Projetos</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="confirm-delete" checked>
+                                        <label for="confirm-delete" class="toggle-label">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pomodoro -->
+                        <div class="settings-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-clock"></i> Pomodoro</h3>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label>Tempo de Trabalho (minutos)</label>
+                                    <input type="number" id="work-duration" min="1" max="60" value="25">
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Tempo de Pausa Curta (minutos)</label>
+                                    <input type="number" id="short-break-duration" min="1" max="30" value="5">
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Tempo de Pausa Longa (minutos)</label>
+                                    <input type="number" id="long-break-duration" min="1" max="60" value="15">
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Pomodoros até Pausa Longa</label>
+                                    <input type="number" id="pomodoros-until-long-break" min="2" max="10" value="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dados -->
+                        <div class="settings-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-database"></i> Dados</h3>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label>Exportar Dados</label>
+                                    <button class="btn-secondary" onclick="app.exportData()">
+                                        <i class="fas fa-download"></i> Baixar Backup
+                                    </button>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Importar Dados</label>
+                                    <div class="import-section">
+                                        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="app.importData(this)">
+                                        <button class="btn-secondary" onclick="document.getElementById('import-file').click()">
+                                            <i class="fas fa-upload"></i> Carregar Backup
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Limpar Todos os Dados</label>
+                                    <button class="btn-danger" onclick="app.clearAllData()">
+                                        <i class="fas fa-trash"></i> Limpar Tudo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sobre -->
+                        <div class="settings-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-info-circle"></i> Sobre</h3>
+                            </div>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label>Versão</label>
+                                    <span class="version-info">Pomotica v1.0.0</span>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Desenvolvedor</label>
+                                    <span class="developer-info">Guinogue</span>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label>Última Atualização</label>
+                                    <span class="update-info" id="last-update">9 de Julho de 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn-primary" onclick="app.saveSettings()">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                        <button class="btn-secondary" onclick="app.resetSettings()">
+                            <i class="fas fa-undo"></i> Restaurar Padrões
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Updates Tab -->
+            <div class="tab-content" id="updates">
+                <div class="updates-container">
+                    <div class="updates-header">
+                        <h2><i class="fas fa-sync-alt"></i> Histórico de Atualizações</h2>
+                        <p>Confira todas as melhorias e novidades implementadas no Pomotica</p>
+                    </div>
+
+                    <div class="updates-timeline">
+                        <div class="update-item current">
+                            <div class="update-date">
+                                <span class="date">Setembro de 2024</span>
+                                <span class="version">v2.2.0</span>
+                            </div>
+                            <div class="update-content">
+                                <h3>Atualização de Arquivos, UI/UX e Correções</h3>
+                                <div class="update-categories">
+                                    <div class="update-category">
+                                        <h4>🐛 Bugs</h4>
+                                        <ul>
+                                            <li>Corrigido vazamento do título da tarefa entre colunas.</li>
+                                            <li>Corrigidos erros de quota do localStorage ao anexar arquivos (uso do IndexedDB).</li>
+                                            <li>Corrigidos previews quebrados/undefined de anexos.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="update-category">
+                                        <h4>🛠️ Alterações</h4>
+                                        <ul>
+                                            <li>Modal de detalhes da tarefa refeito (2 colunas, dropzone, ações nas miniaturas).</li>
+                                            <li>Arquitetura de anexos: blobs no IndexedDB e metadados com thumbs leves no localStorage.</li>
+                                            <li>Viewer de anexos com imagem/vídeo/PDF em tela cheia.</li>
+                                            <li>Sidebar reorganizada: "Atualizações" movido para a seção Sistema.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="update-category">
+                                        <h4>✨ Melhorias</h4>
+                                        <ul>
+                                            <li>Imagens agora abrem em alta qualidade no viewer (blob original).</li>
+                                            <li>GIFs reproduzidos automaticamente em loop.</li>
+                                            <li>Preview de vídeos com frame inicial automaticamente gerado.</li>
+                                            <li>Coluna Arquivos exibe miniaturas/ícones com contador "+N".</li>
+                                            <li>Responsividade aprimorada para monitores grandes e telas menores.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Versão Anterior -->
+                        <div class="update-item">
+                            <div class="update-date">
+                                <span class="date">8 de Setembro de 2024</span>
+                                <span class="version">v2.0.0</span>
+                            </div>
+                            <div class="update-content">
+                                <h3>⚙️ Página de Configurações Completa</h3>
+                                <div class="update-categories">
+                                    <div class="update-category">
+                                        <h4><i class="fas fa-cog"></i> Configurações Avançadas</h4>
+                                        <ul>
+                                            <li>🎨 <strong>Seleção de temas:</strong> Interface visual para escolher temas</li>
+                                            <li>🔔 <strong>Configurações de notificações:</strong> Controle de alertas e sons</li>
+                                            <li>⏰ <strong>Configurações do Pomodoro:</strong> Personalização de tempos e intervalos</li>
+                                            <li>💾 <strong>Gerenciamento de dados:</strong> Exportar, importar e limpar dados</li>
+                                            <li>🗑️ <strong>Confirmação de exclusão:</strong> Opção para desabilitar confirmações</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Versão Anterior -->
+                        <div class="update-item">
+                            <div class="update-date">
+                                <span class="date">7 de Setembro de 2024</span>
+                                <span class="version">v1.5.0</span>
+                            </div>
+                            <div class="update-content">
+                                <h3>📊 Dashboard e Sistema de Projetos</h3>
+                                <div class="update-categories">
+                                    <div class="update-category">
+                                        <h4><i class="fas fa-chart-line"></i> Dashboard Melhorado</h4>
+                                        <ul>
+                                            <li>📈 <strong>Gráficos dinâmicos:</strong> Cores que se adaptam ao tema ativo</li>
+                                            <li>🎯 <strong>Sistema de XP:</strong> Experiência e níveis para gamificação</li>
+                                            <li>📊 <strong>Comparação de períodos:</strong> Análise de produtividade</li>
+                                            <li>🏆 <strong>Sistema de conquistas:</strong> Recompensas por metas alcançadas</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="update-category">
+                                        <h4><i class="fas fa-project-diagram"></i> Interface de Projetos</h4>
+                                        <ul>
+                                            <li>🎨 <strong>Design inspirado no Monday.com:</strong> Interface moderna e intuitiva</li>
+                                            <li>📋 <strong>Tabela dinâmica:</strong> Altura ajustada ao conteúdo</li>
+                                            <li>🎯 <strong>Tarefas diárias:</strong> Sistema de tarefas recorrentes</li>
+                                            <li>🎨 <strong>Gradientes e efeitos:</strong> Visual atrativo mantendo a identidade</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Versão Anterior -->
+                        <div class="update-item">
+                            <div class="update-date">
+                                <span class="date">6 de Setembro de 2024</span>
+                                <span class="version">v1.0.0</span>
+                            </div>
+                            <div class="update-content">
+                                <h3>🚀 Lançamento Inicial</h3>
+                                <div class="update-categories">
+                                    <div class="update-category">
+                                        <h4><i class="fas fa-rocket"></i> Funcionalidades Base</h4>
+                                        <ul>
+                                            <li>⏰ <strong>Timer Pomodoro:</strong> Sistema completo de foco e intervalos</li>
+                                            <li>📋 <strong>Gerenciamento de tarefas:</strong> Criação, edição e conclusão</li>
+                                            <li>📁 <strong>Sistema de projetos:</strong> Organização por projetos</li>
+                                            <li>🎨 <strong>6 temas disponíveis:</strong> Personalização visual completa</li>
+                                            <li>💾 <strong>Persistência de dados:</strong> Salvamento automático no navegador</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="updates-footer">
+                        <div class="update-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-code"></i>
+                                <span>4 Versões</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-feature"></i>
+                                <span>25+ Melhorias</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-bug"></i>
+                                <span>10+ Correções</span>
+                            </div>
+                        </div>
+                        <p class="update-note">
+                            <i class="fas fa-info-circle"></i>
+                            O Pomotica está em constante evolução. Novas funcionalidades são adicionadas regularmente!
+                        </p>
+                        <div class="development-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>⚠️ Aviso de Desenvolvimento:</strong> Este site está em desenvolvimento ativo. Podem ocorrer bugs ou instabilidades. 
+                            Relate qualquer problema encontrado para que possamos melhorar continuamente!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-content" id="profile">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar-container">
+                                <img id="profile-avatar" src="" alt="Avatar" class="profile-avatar">
+                                <div class="avatar-overlay">
+                                    <button class="avatar-upload-btn" onclick="app.openAvatarUpload()">
+                                        <i class="fas fa-camera"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;" onchange="app.handleAvatarUpload(this)">
+                        </div>
+                        
+                        <div class="profile-info">
+                            <div class="profile-name-section">
+                                <h2 id="profile-name">Nome de usuário</h2>
+                                <button class="edit-name-btn" onclick="app.editProfileName()" title="Editar nome">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <p id="profile-title"></p>
+                            <div class="profile-level">
+                                <span class="level-badge">Nível <span id="user-level">1</span></span>
+                                <div class="level-progress">
+                                    <div class="level-progress-bar">
+                                        <div class="level-progress-fill" id="level-progress-fill"></div>
+                                    </div>
+                                    <span class="level-xp"><span id="current-xp">0</span> / <span id="next-level-xp">100</span> XP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-sections">
+                        <!-- Estatísticas Pessoais -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-chart-line"></i> Estatísticas Pessoais</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value" id="total-focus-time">0h</div>
+                                        <div class="stat-label">Tempo Total de Foco</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-tasks"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value" id="total-tasks-completed">0</div>
+                                        <div class="stat-label">Tarefas Concluídas</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-fire"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value" id="current-streak">0</div>
+                                        <div class="stat-label">Sequência Atual</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-day"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value" id="days-active">1</div>
+                                        <div class="stat-label">Dias Ativos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conquistas -->
+                        <div class="profile-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-trophy"></i> Conquistas</h3>
+                                <span class="achievement-count" id="achievement-count">0/18</span>
+                            </div>
+                            <div class="achievements-grid" id="profile-achievements">
+                                <!-- Conquistas serão inseridas aqui -->
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="profile-actions">
+                        <button class="btn-primary" onclick="app.saveProfile()">
+                            <i class="fas fa-save"></i> Salvar Perfil
+                        </button>
+                        <button class="btn-secondary" onclick="app.resetProfile()">
+                            <i class="fas fa-undo"></i> Restaurar Padrões
+                        </button>
+                        <button class="btn-danger" onclick="app.deleteProfile()">
+                            <i class="fas fa-trash"></i> Deletar Perfil
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credits Tab -->
+            <div class="tab-content" id="credits">
+                <div class="credits-container">
+                    <div class="credits-header">
+                        <h2><i class="fas fa-heart"></i> Créditos</h2>
+                        <p>Desenvolvido com ❤️ para artistas e criadores</p>
+                    </div>
+                    
+                    <div class="author-section">
+                        <div class="author-card">
+                            <div class="author-avatar">
+                                <img src="https://cdnb.artstation.com/p/users/avatars/002/596/791/large/d91d4a71436013c2317ec9af8c686159.jpg?1750250947" alt="Guinogue" class="author-photo">
+                            </div>
+                            <div class="author-info">
+                                <h3>Guinogue</h3>
+                                <p class="author-title">Artista Digital & Desenvolvedor</p>
+                                <p class="author-description">
+                                    Criador do Pomotica, artista digital especializado em ilustração, 
+                                    concept art e desenvolvimento de ferramentas para criativos.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="author-links">
+                            <a href="https://www.artstation.com/guinogue" target="_blank" class="author-link portfolio">
+                                <i class="fab fa-artstation"></i>
+                                <span>Portfolio</span>
+                                <small>ArtStation</small>
+                            </a>
+                            
+                            <a href="https://www.artgram.co/guinogue" target="_blank" class="author-link portfolio">
+                                <i class="fas fa-cube"></i>
+                                <span>Portfolio 3D</span>
+                                <small>Artgram</small>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="support-section">
+                        <h3><i class="fas fa-star"></i> Apoie o Criador</h3>
+                        <p class="support-description">
+                            🎨 <strong>Transforme sua arte!</strong> Aprenda com cursos profissionais e ajude a criar mais ferramentas incríveis para artistas como você!
+                        </p>
+                        <div class="support-benefits">
+                            <div class="benefit-item">
+                                <i class="fas fa-rocket"></i>
+                                <span>Impulsione sua carreira artística</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-users"></i>
+                                <span>Junte-se a milhares de usuários satisfeitos</span>
+                            </div>
+                            <div class="benefit-item">
+                                <i class="fas fa-tools"></i>
+                                <span>Ajude a criar mais ferramentas gratuitas</span>
+                            </div>
+                        </div>
+                        
+                        <div class="courses-grid">
+                            <div class="course-card featured">
+                                <div class="course-badge">🔥 MAIS POPULAR</div>
+                                <div class="course-icon">
+                                    <i class="fas fa-pencil-ruler"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Fundamentos do Desenho</h4>
+                                    <p class="course-subtitle">Para todos os estilos de desenho</p>
+                                    <div class="course-rating">
+                                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                                        <span class="rating-text">4.8/5 (1,200+ usuários)</span>
+                                    </div>
+                                    <div class="course-features">
+                                        <span class="feature">✓ Anatomia básica</span>
+                                        <span class="feature">✓ Perspectiva</span>
+                                        <span class="feature">✓ Composição</span>
+                                        <span class="feature">✓ Técnicas fundamentais</span>
+                                    </div>
+                                </div>
+                                <a href="https://www.udemy.com/course/os-fundamentos-do-desenho-para-todos-os-estilos-de-desenho/?referralCode=793A174C6B571BC4CF95" target="_blank" class="course-btn">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Comprar Agora
+                                </a>
+                            </div>
+                            
+                            <div class="course-card">
+                                <div class="course-badge">🎯 ESPECIALIZADO</div>
+                                <div class="course-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="course-info">
+                                    <h4>Como Desenhar e Pintar Olhos</h4>
+                                    <p class="course-subtitle">Do iniciante ao profissional</p>
+                                    <div class="course-rating">
+                                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                                        <span class="rating-text">4.9/5 (800+ usuários)</span>
+                                    </div>
+                                    <div class="course-features">
+                                        <span class="feature">✓ Anatomia do olho</span>
+                                        <span class="feature">✓ Expressões</span>
+                                        <span class="feature">✓ Técnicas de pintura</span>
+                                        <span class="feature">✓ Realismo</span>
+                                    </div>
+                                </div>
+                                <a href="https://www.udemy.com/course/como-desenhar-e-pintar-olhos-iniciante-ao-profissional/?referralCode=8FDB8B4F8257C7D2E26C" target="_blank" class="course-btn">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Comprar Agora
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="footer-credits">
+                        <p>© 2024 Pomotica - Desenvolvido por Guinogue</p>
+                        <p class="made-with">Feito com ❤️ para a comunidade criativa</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para adicionar projeto -->
+    <div class="modal" id="add-project-modal">
+        <div class="modal-content project-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Criar Novo Projeto</h3>
+                <button class="close-btn" onclick="closeModal('add-project-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="project-title">
+                        <i class="fas fa-tag"></i> Nome do Projeto
+                    </label>
+                    <input type="text" id="project-title" placeholder="Ex: Site de Portfolio" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-description">
+                        <i class="fas fa-align-left"></i> Descrição
+                    </label>
+                    <textarea id="project-description" placeholder="Descreva brevemente o que é este projeto..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-color">
+                            <i class="fas fa-palette"></i> Cor do Projeto
+                        </label>
+                        <div class="color-picker">
+                            <input type="color" id="project-color" value="#6366f1">
+                            <div id="project-color-preview" style="width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border-primary); background: #6366f1; margin-left: 10px;"></div>
+                            <div class="color-presets">
+                                <button type="button" class="color-preset" data-color="#6366f1" style="background: #6366f1"></button>
+                                <button type="button" class="color-preset" data-color="#10b981" style="background: #10b981"></button>
+                                <button type="button" class="color-preset" data-color="#f59e0b" style="background: #f59e0b"></button>
+                                <button type="button" class="color-preset" data-color="#ef4444" style="background: #ef4444"></button>
+                                <button type="button" class="color-preset" data-color="#8b5cf6" style="background: #8b5cf6"></button>
+                                <button type="button" class="color-preset" data-color="#06b6d4" style="background: #06b6d4"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-deadline">
+                            <i class="fas fa-calendar"></i> Prazo (opcional)
+                        </label>
+                        <input type="date" id="project-deadline">
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('add-project-modal')">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn-primary" onclick="addProject()">
+                        <i class="fas fa-check"></i> Criar Projeto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar tarefa -->
+    <div class="modal" id="add-task-modal">
+        <div class="modal-content task-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-tasks"></i> Nova Tarefa</h3>
+                <button class="close-btn" onclick="closeModal('add-task-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="task-project">
+                        <i class="fas fa-project-diagram"></i> Projeto
+                    </label>
+                    <select id="task-project" required>
+                        <option value="">Selecione um projeto</option>
+                        <!-- Projetos serão inseridos aqui dinamicamente -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-title">
+                        <i class="fas fa-tag"></i> Título da Tarefa
+                    </label>
+                    <input type="text" id="task-title" placeholder="Ex: Criar layout da homepage" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-description">
+                        <i class="fas fa-align-left"></i> Descrição
+                    </label>
+                    <textarea id="task-description" placeholder="Detalhes da tarefa..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">
+                            <i class="fas fa-flag"></i> Prioridade
+                        </label>
+                        <div class="priority-selector">
+                            <button type="button" class="priority-btn low" data-priority="low">
+                                <i class="fas fa-arrow-down"></i> Baixa
+                            </button>
+                            <button type="button" class="priority-btn medium active" data-priority="medium">
+                                <i class="fas fa-minus"></i> Média
+                            </button>
+                            <button type="button" class="priority-btn high" data-priority="high">
+                                <i class="fas fa-arrow-up"></i> Alta
+                            </button>
+                        </div>
+                        <input type="hidden" id="task-priority" value="medium">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-daily">
+                            <i class="fas fa-calendar-day"></i> Tipo de Tarefa
+                        </label>
+                        <div class="task-type-selector">
+                            <button type="button" class="task-type-btn normal active" data-type="normal">
+                                <i class="fas fa-tasks"></i> Normal
+                            </button>
+                            <button type="button" class="task-type-btn daily" data-type="daily">
+                                <i class="fas fa-redo"></i> Diária
+                            </button>
+                        </div>
+                        <input type="hidden" id="task-daily" value="false">
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('add-task-modal')">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn-primary" onclick="addTask()">
+                        <i class="fas fa-check"></i> Criar Tarefa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para adicionar subtarefa -->
+    <div class="modal" id="add-subtask-modal">
+        <div class="modal-content subtask-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-list-ul"></i> Nova Subtarefa</h3>
+                <button class="close-btn" onclick="closeModal('add-subtask-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="subtask-title">
+                        <i class="fas fa-tag"></i> Título da Subtarefa
+                    </label>
+                    <input type="text" id="subtask-title" placeholder="Ex: Criar wireframe da página inicial" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subtask-description">
+                        <i class="fas fa-align-left"></i> Descrição
+                    </label>
+                    <textarea id="subtask-description" placeholder="Detalhes da subtarefa..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subtask-priority">
+                        <i class="fas fa-flag"></i> Prioridade
+                    </label>
+                    <div class="priority-selector">
+                        <button type="button" class="priority-btn low" data-priority="low">
+                            <i class="fas fa-arrow-down"></i> Baixa
+                        </button>
+                        <button type="button" class="priority-btn medium active" data-priority="medium">
+                            <i class="fas fa-minus"></i> Média
+                        </button>
+                        <button type="button" class="priority-btn high" data-priority="high">
+                            <i class="fas fa-arrow-up"></i> Alta
+                        </button>
+                    </div>
+                    <input type="hidden" id="subtask-priority" value="medium">
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('add-subtask-modal')">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button class="btn-primary" onclick="addSubtask()">
+                        <i class="fas fa-check"></i> Criar Subtarefa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para adicionar categoria -->
+    <div class="modal" id="add-category-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova Categoria</h3>
+                <button class="close-btn" onclick="closeModal('add-category-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="category-name" placeholder="Nome da categoria" required>
+                <input type="color" id="category-color" value="#3b82f6" title="Cor da categoria">
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('add-category-modal')">Cancelar</button>
+                    <button class="btn-primary" onclick="addCategory()">Criar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para gerenciar categorias -->
+    <div class="modal" id="manage-categories-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Gerenciar Categorias</h3>
+                <button class="close-btn" onclick="closeModal('manage-categories-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="categories-list">
+                    <!-- Lista de categorias será inserida aqui -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('manage-categories-modal')">Fechar</button>
+                </div>
+            </div>
+        </div>
+        </main>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes da Tarefa -->
+    <div class="modal" id="task-details-modal">
+        <div class="modal-content task-details-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Detalhes da Tarefa</h3>
+                <button class="close-btn" onclick="closeModal('task-details-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="task-details-project-id">
+                <input type="hidden" id="task-details-task-id">
+
+                <div class="task-details-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="task-details-title"><i class="fas fa-tag"></i> Título</label>
+                            <input type="text" id="task-details-title" placeholder="Título da tarefa">
+                        </div>
+                        <div class="form-group">
+                            <label for="task-details-desc"><i class="fas fa-align-left"></i> Descrição</label>
+                            <textarea id="task-details-desc" rows="8" placeholder="Descrição da tarefa"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label><i class="fas fa-paperclip"></i> Anexos</label>
+                            <div id="attachments-dropzone" class="dropzone">
+                                Arraste e solte arquivos aqui ou clique para selecionar
+                                <input type="file" id="task-attachments-input" multiple accept="image/*,video/*,application/pdf" style="display:none;">
+                            </div>
+                            <div id="task-attachments-preview" class="attachments-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeModal('task-details-modal')"><i class="fas fa-times"></i> Cancelar</button>
+                    <button class="btn-primary" onclick="app.saveTaskDetails()"><i class="fas fa-save"></i> Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Viewer de Anexos (imagem/GIF/vídeo) -->
+    <div class="modal" id="attachment-viewer-modal">
+        <div class="modal-content attachment-viewer-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-eye"></i> Visualização</h3>
+                <button class="close-btn" onclick="closeModal('attachment-viewer-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="attachment-viewer-content" class="attachment-viewer-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão flutuante do Pomodoro -->
+    <div id="floating-pomodoro" class="floating-pomodoro hidden">
+        <div class="pomodoro-display">
+            <div class="pomodoro-time" id="floating-timer">25:00</div>
+            <div class="pomodoro-status" id="floating-status">Foco</div>
+        </div>
+        <div class="pomodoro-controls">
+            <button id="floating-start" class="pomodoro-btn start" title="Iniciar">
+                <i class="fas fa-play"></i>
+            </button>
+            <button id="floating-pause" class="pomodoro-btn pause" title="Pausar">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button id="floating-reset" class="pomodoro-btn reset" title="Resetar">
+                <i class="fas fa-redo"></i>
+            </button>
+            <button id="floating-minimize" class="pomodoro-btn minimize" title="Minimizar">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Botão para mostrar Pomodoro -->
+    <button id="show-pomodoro-btn" class="show-pomodoro-btn hidden">
+        <i class="fas fa-clock"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

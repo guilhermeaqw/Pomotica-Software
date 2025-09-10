@@ -1,0 +1,23 @@
+# Dependências
+node_modules/
+
+# Builds/artefatos
+/dist/
+/build/
+/out/
+/release/
+/*.exe
+/*.dmg
+/*.AppImage
+
+# Cache e logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# SO/Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

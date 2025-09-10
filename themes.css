@@ -1,0 +1,593 @@
+/* WorkSite - Temas Elegantes com Degradês */
+
+/* 🌅 Tema Aurora */
+:root[data-theme="aurora"] {
+    --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(102, 126, 234, 0.5) 0%, rgba(118, 75, 162, 0.5) 100%);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-accent: #ffffff;
+    --border-primary: rgba(255, 255, 255, 0.3);
+    --border-secondary: rgba(255, 255, 255, 0.2);
+    --border-accent: rgba(255, 255, 255, 0.4);
+    --accent-primary: #ff6b6b;
+    --accent-secondary: #ff8e8e;
+    --accent-hover: #ffa8a8;
+    --accent-primary-rgb: 255, 107, 107;
+    --success: #4ecdc4;
+    --danger: #ff6b6b;
+    --info: #45b7d1;
+    --modal-bg: rgba(102, 126, 234, 0.95);
+}
+
+/* 🌊 Tema Oceano Profundo */
+:root[data-theme="ocean"] {
+    --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0369a1 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(12, 74, 110, 0.9) 0%, rgba(7, 89, 133, 0.9) 50%, rgba(3, 105, 161, 0.9) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(12, 74, 110, 0.7) 0%, rgba(7, 89, 133, 0.7) 50%, rgba(3, 105, 161, 0.7) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(12, 74, 110, 0.5) 0%, rgba(7, 89, 133, 0.5) 50%, rgba(3, 105, 161, 0.5) 100%);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-accent: #ffffff;
+    --border-primary: rgba(56, 189, 248, 0.4);
+    --border-secondary: rgba(56, 189, 248, 0.3);
+    --border-accent: rgba(56, 189, 248, 0.5);
+    --accent-primary: #38bdf8;
+    --accent-secondary: #7dd3fc;
+    --accent-hover: #bae6fd;
+    --accent-primary-rgb: 56, 189, 248;
+    --success: #10b981;
+    --danger: #ef4444;
+    --info: #06b6d4;
+    --modal-bg: rgba(12, 74, 110, 0.95);
+}
+
+/* 🌸 Tema Sakura */
+:root[data-theme="sakura"] {
+    --bg-primary: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(253, 242, 248, 0.9) 0%, rgba(252, 231, 243, 0.9) 50%, rgba(251, 207, 232, 0.9) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(253, 242, 248, 0.7) 0%, rgba(252, 231, 243, 0.7) 50%, rgba(251, 207, 232, 0.7) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(253, 242, 248, 0.5) 0%, rgba(252, 231, 243, 0.5) 50%, rgba(251, 207, 232, 0.5) 100%);
+    --text-primary: #831843;
+    --text-secondary: rgba(131, 24, 67, 0.8);
+    --text-accent: #831843;
+    --border-primary: rgba(236, 72, 153, 0.3);
+    --border-secondary: rgba(236, 72, 153, 0.2);
+    --border-accent: rgba(236, 72, 153, 0.4);
+    --accent-primary: #ec4899;
+    --accent-secondary: #f472b6;
+    --accent-hover: #f9a8d4;
+    --accent-primary-rgb: 236, 72, 153;
+    --success: #10b981;
+    --danger: #ef4444;
+    --info: #06b6d4;
+    --modal-bg: rgba(253, 242, 248, 0.95);
+}
+
+/* 🌙 Tema Lua Nova */
+:root[data-theme="moon"] {
+    --bg-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(30, 27, 75, 0.9) 0%, rgba(49, 46, 129, 0.9) 50%, rgba(67, 56, 202, 0.9) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(30, 27, 75, 0.7) 0%, rgba(49, 46, 129, 0.7) 50%, rgba(67, 56, 202, 0.7) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(49, 46, 129, 0.5) 50%, rgba(67, 56, 202, 0.5) 100%);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-accent: #ffffff;
+    --border-primary: rgba(139, 92, 246, 0.4);
+    --border-secondary: rgba(139, 92, 246, 0.3);
+    --border-accent: rgba(139, 92, 246, 0.5);
+    --accent-primary: #8b5cf6;
+    --accent-secondary: #a78bfa;
+    --accent-hover: #c4b5fd;
+    --accent-primary-rgb: 139, 92, 246;
+    --success: #10b981;
+    --danger: #ef4444;
+    --info: #06b6d4;
+    --modal-bg: rgba(30, 27, 75, 0.95);
+}
+
+/* 🌅 Tema Pôr do Sol Profissional */
+:root[data-theme="sunset"] {
+    --bg-primary: linear-gradient(135deg, #1A1A2E 0%, #20203A 50%, #282848 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(32, 32, 58, 0.95) 50%, rgba(40, 40, 72, 0.95) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(32, 32, 58, 0.8) 50%, rgba(40, 40, 72, 0.8) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(26, 26, 46, 0.6) 0%, rgba(32, 32, 58, 0.6) 50%, rgba(40, 40, 72, 0.6) 100%);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --text-accent: #ffffff;
+    --border-primary: rgba(0, 115, 234, 0.3);
+    --border-secondary: rgba(0, 115, 234, 0.2);
+    --border-accent: rgba(0, 115, 234, 0.4);
+    --accent-primary: #0073EA;
+    --accent-secondary: #4A9EFF;
+    --accent-hover: #7BB3FF;
+    --accent-primary-rgb: 0, 115, 234;
+    --success: #28A745;
+    --danger: #DC3545;
+    --info: #17A2B8;
+    --modal-bg: rgba(26, 26, 46, 0.98);
+}
+
+/* 🌌 Tema Noite Estrelada */
+:root[data-theme="night"] {
+    --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    --bg-secondary: linear-gradient(135deg, rgba(15, 15, 35, 0.95) 0%, rgba(26, 26, 46, 0.95) 50%, rgba(22, 33, 62, 0.95) 100%);
+    --bg-tertiary: linear-gradient(135deg, rgba(15, 15, 35, 0.8) 0%, rgba(26, 26, 46, 0.8) 50%, rgba(22, 33, 62, 0.8) 100%);
+    --bg-quaternary: linear-gradient(135deg, rgba(15, 15, 35, 0.6) 0%, rgba(26, 26, 46, 0.6) 50%, rgba(22, 33, 62, 0.6) 100%);
+    --text-primary: #e2e8f0;
+    --text-secondary: rgba(226, 232, 240, 0.8);
+    --text-accent: #ffffff;
+    --border-primary: rgba(99, 102, 241, 0.4);
+    --border-secondary: rgba(99, 102, 241, 0.3);
+    --border-accent: rgba(99, 102, 241, 0.5);
+    --accent-primary: #6366f1;
+    --accent-secondary: #818cf8;
+    --accent-hover: #a5b4fc;
+    --accent-primary-rgb: 99, 102, 241;
+    --success: #10b981;
+    --danger: #ef4444;
+    --info: #06b6d4;
+    --modal-bg: rgba(15, 15, 35, 0.98);
+}
+
+/* Estilos do Seletor de Temas */
+.theme-selector {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.theme-selector label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.theme-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.theme-btn {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--border-secondary);
+    border-radius: 15px;
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.theme-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: var(--border-accent);
+    box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.theme-btn.active {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.5);
+    transform: scale(1.1);
+}
+
+.theme-btn.active::after {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--accent-primary);
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.theme-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+}
+
+.theme-btn span {
+    font-size: 18px;
+    z-index: 2;
+    position: relative;
+}
+
+/* Previews específicos para cada tema */
+.aurora-preview {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.ocean-preview {
+    background: linear-gradient(135deg, #0c4a6e 0%, #075985 50%, #0369a1 100%);
+}
+
+.sakura-preview {
+    background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+}
+
+.moon-preview {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+}
+
+.sunset-preview {
+    background: linear-gradient(135deg, #1A1A2E 0%, #20203A 50%, #282848 100%);
+}
+
+.night-preview {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* Aplicação das variáveis CSS com degradês */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.nav-tabs {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    backdrop-filter: blur(20px);
+}
+
+.tab-btn {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: var(--bg-quaternary);
+    color: var(--text-accent);
+    box-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.main-content {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    backdrop-filter: blur(20px);
+}
+
+.stat-card {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-secondary);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(var(--accent-primary-rgb), 0.2);
+}
+
+.stat-card h3 {
+    color: var(--text-secondary);
+}
+
+.stat-value {
+    color: var(--text-accent);
+}
+
+.quick-actions {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
+    backdrop-filter: blur(15px);
+}
+
+.quick-actions h3 {
+    color: var(--text-primary);
+}
+
+.action-btn {
+    background: var(--bg-quaternary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: var(--accent-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.time-circle {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-secondary);
+    color: var(--text-primary);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.time-circle:hover {
+    border-color: var(--border-accent);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(var(--accent-primary-rgb), 0.4);
+}
+
+.time-text {
+    color: var(--text-accent);
+}
+
+.timer-label {
+    color: var(--text-secondary);
+}
+
+.timer-btn {
+    background: var(--bg-quaternary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.timer-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.timer-btn:disabled {
+    background: var(--bg-tertiary);
+    border-color: var(--border-secondary);
+}
+
+.timer-settings {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
+    backdrop-filter: blur(15px);
+}
+
+.setting-group label {
+    color: var(--text-secondary);
+}
+
+.setting-group input {
+    border: 1px solid var(--border-secondary);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+.setting-group input:focus {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.tasks-header h3, .notes-header h3 {
+    color: var(--text-primary);
+}
+
+.add-task-btn, .add-note-btn {
+    background: var(--bg-quaternary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.add-task-btn:hover, .add-note-btn:hover {
+    background: var(--accent-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.filter-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-secondary);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: var(--bg-quaternary);
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--bg-quaternary);
+    border-color: var(--border-accent);
+    color: var(--text-accent);
+    box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.task-item {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-secondary);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.task-item:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.2);
+}
+
+.task-title {
+    color: var(--text-primary);
+}
+
+.task-category {
+    background: var(--bg-quaternary);
+    color: var(--text-secondary);
+}
+
+.task-description {
+    color: var(--text-secondary);
+}
+
+.task-btn {
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.task-btn:hover {
+    transform: translateY(-2px);
+}
+
+.task-btn.complete {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.task-btn.delete {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+}
+
+.note-item {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-secondary);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+}
+
+.note-item:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.2);
+}
+
+.note-title {
+    color: var(--text-primary);
+}
+
+.note-type {
+    background: var(--bg-quaternary);
+    color: var(--text-secondary);
+}
+
+.note-content {
+    color: var(--text-secondary);
+}
+
+.note-btn {
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.note-btn:hover {
+    transform: translateY(-2px);
+}
+
+.note-btn.edit {
+    background: var(--info);
+    color: white;
+    border-color: var(--info);
+}
+
+.note-btn.delete {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+}
+
+.modal {
+    background: var(--modal-bg);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    backdrop-filter: blur(20px);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.modal-header h3 {
+    color: var(--text-primary);
+}
+
+.close-btn {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.modal-body input,
+.modal-body textarea,
+.modal-body select {
+    border: 1px solid var(--border-secondary);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus,
+.modal-body select:focus {
+    border-color: var(--border-accent);
+    box-shadow: 0 0 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.btn-primary {
+    background: var(--bg-quaternary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--bg-quaternary);
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
