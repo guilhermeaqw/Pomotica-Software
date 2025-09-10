@@ -3740,8 +3740,13 @@ class PomoticaApp {
                     setTimeout(() => setVisible(false), 1500);
                     break;
                 case 'error':
-                    txt.textContent = 'Falha ao verificar/baixar atualização.';
-                    setTimeout(() => setVisible(false), 2000);
+                    txt.textContent = `Falha ao verificar/baixar atualização.`;
+                    btn.textContent = 'Tentar novamente';
+                    btn.onclick = async () => {
+                        txt.textContent = 'Procurando atualizações…';
+                        prog.style.width = '0%';
+                        await (window.electron && window.electron.checkForUpdates ? window.electron.checkForUpdates() : Promise.resolve());
+                    };
                     break;
             }
         });

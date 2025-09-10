@@ -1,6 +1,6 @@
 {
   "name": "Pomotica",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Pomotica - App desktop",
   "main": "main.js",
   "author": "Guinogue",
@@ -38,7 +38,13 @@
     ],
     "win": {
       "target": [
-        { "target": "nsis", "arch": ["x64", "ia32"] }
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ]
     },
     "nsis": {
@@ -48,6 +54,7 @@
     }
   },
   "dependencies": {
+    "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2"
   }
 }

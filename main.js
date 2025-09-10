@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Tray, Menu, ipcMain, nativeImage, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const log = require('electron-log');
 const path = require('path');
 
 let tray = null;
@@ -12,7 +13,7 @@ function createTray() {
     tray.setToolTip('Pomotica');
     const contextMenu = Menu.buildFromTemplate([
       { label: 'Mostrar', click: () => { if (mainWindow) { mainWindow.show(); mainWindow.focus(); } } },
-      { label: 'Verificar atualizações', click: () => autoUpdater.checkForUpdatesAndNotify().catch(() => {}) },
+      { label: 'Verificar atualizações', click: () => autoUpdater.checkForUpdates().catch((e) => log.error(e)) },
       { label: 'Sair', click: () => app.quit() }
     ]);
     tray.setContextMenu(contextMenu);
@@ -43,27 +44,37 @@ function createWindow() {
 }
 
 function sendUpdateStatus(payload) {
-  try { if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('update-status', payload); } catch (_) {}
+  try { if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('update-status', payload); } catch (e) { log.error(e); }
 }
 
 function setupAutoUpdate() {
+  // Logger e configuração
+  log.transports.file.level = 'info';
+  autoUpdater.logger = log;
   autoUpdater.autoDownload = true;
+  autoUpdater.allowPrerelease = true; // caso a release seja marcada como pre-release
+  try {
+    autoUpdater.setFeedURL({ provider: 'github', owner: 'guilhermeaqw', repo: 'Pomotica-Software' });
+  } catch (e) {
+    log.warn('setFeedURL falhou (usando config embutida):', e);
+  }
+
   autoUpdater.on('checking-for-update', () => sendUpdateStatus({ type: 'checking' }));
-  autoUpdater.on('update-available', () => {
+  autoUpdater.on('update-available', (info) => {
     if (tray) tray.setToolTip('Pomotica - Baixando atualização...');
-    sendUpdateStatus({ type: 'available' });
+    sendUpdateStatus({ type: 'available', info });
   });
-  autoUpdater.on('update-not-available', () => {
+  autoUpdater.on('update-not-available', (info) => {
     if (tray) tray.setToolTip('Pomotica');
-    sendUpdateStatus({ type: 'not-available' });
+    sendUpdateStatus({ type: 'not-available', info });
   });
   autoUpdater.on('download-progress', (p) => {
     if (tray) tray.setToolTip(`Pomotica - Baixando (${Math.round(p.percent)}%)`);
     sendUpdateStatus({ type: 'progress', percent: Math.round(p.percent), bytesPerSecond: p.bytesPerSecond });
   });
-  autoUpdater.on('update-downloaded', () => {
+  autoUpdater.on('update-downloaded', (info) => {
     if (tray) tray.setToolTip('Pomotica - Atualização pronta');
-    sendUpdateStatus({ type: 'downloaded' });
+    sendUpdateStatus({ type: 'downloaded', info });
     dialog.showMessageBox({
       type: 'info', buttons: ['Reiniciar agora', 'Depois'], defaultId: 0,
       title: 'Atualização', message: 'Uma atualização foi baixada. Deseja reiniciar para aplicar?'
@@ -71,19 +82,31 @@ function setupAutoUpdate() {
   });
   autoUpdater.on('error', (err) => {
     if (tray) tray.setToolTip('Pomotica');
+    log.error('Updater error:', err);
     sendUpdateStatus({ type: 'error', message: String(err && err.message || err) });
   });
 }
 
 // IPC para controle manual a partir do renderer
-ipcMain.handle('update-check', async () => { try { sendUpdateStatus({ type: 'checking' }); await autoUpdater.checkForUpdatesAndNotify(); return true; } catch { sendUpdateStatus({ type: 'error', message: 'Falha ao iniciar verificação' }); return false; } });
+ipcMain.handle('update-check', async () => {
+  try {
+    sendUpdateStatus({ type: 'checking' });
+    const r = await autoUpdater.checkForUpdates();
+    // Se não for autoDownload, poderíamos chamar autoUpdater.downloadUpdate();
+    return !!r;
+  } catch (e) {
+    sendUpdateStatus({ type: 'error', message: String(e && e.message || e) });
+    return false;
+  }
+});
 ipcMain.handle('update-install', async () => { try { autoUpdater.quitAndInstall(); return true; } catch { return false; } });
 
 app.whenReady().then(() => {
   createWindow();
   createTray();
   setupAutoUpdate();
-  autoUpdater.checkForUpdatesAndNotify().catch(() => {});
+  // Checar no início
+  autoUpdater.checkForUpdates().catch((e) => log.error(e));
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
