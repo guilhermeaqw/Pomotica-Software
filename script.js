@@ -343,8 +343,8 @@ class PomoticaApp {
             this.renderDashboard();
             this.initializeCreditsTab();
             this.setupFloatingPomodoro();
-            // Recolher tarefas concluídas após render
             this.collapseCompletedTasksUI && this.collapseCompletedTasksUI();
+            this.setupUpdateBar && this.setupUpdateBar();
         }, 100);
 
         // Observar mudanças para manter tarefas concluídas recolhidas
@@ -3687,6 +3687,61 @@ class PomoticaApp {
             }
         }
         return { startDate: start, endDate: end, focusTime, tasksCompleted, pomodoros };
+    }
+
+    setupUpdateBar() {
+        const bar = document.getElementById('update-bar');
+        const txt = document.getElementById('update-text');
+        const prog = document.getElementById('update-progress');
+        const btn = document.getElementById('update-action');
+        if (!bar || !txt || !prog || !btn || !window.electron) return;
+
+        const setVisible = (v) => { bar.style.display = v ? 'block' : 'none'; };
+        btn.onclick = async () => {
+            try {
+                setVisible(true);
+                txt.textContent = 'Procurando atualizações…';
+                prog.style.width = '0%';
+                if (window.electron && window.electron.checkForUpdates) {
+                    await window.electron.checkForUpdates();
+                } else {
+                    txt.textContent = 'Atualizador indisponível.';
+                }
+            } catch {
+                txt.textContent = 'Falha ao verificar atualizações.';
+            }
+        };
+
+        window.electron.onUpdateStatus((e) => {
+            switch (e.type) {
+                case 'checking':
+                    setVisible(true);
+                    txt.textContent = 'Procurando atualizações…';
+                    prog.style.width = '0%';
+                    break;
+                case 'available':
+                    txt.textContent = 'Baixando atualização…';
+                    break;
+                case 'progress':
+                    txt.textContent = `Baixando: ${e.percent}%`;
+                    prog.style.width = `${e.percent}%`;
+                    break;
+                case 'downloaded':
+                    txt.textContent = 'Atualização pronta. Reinicie para aplicar.';
+                    btn.textContent = 'Reiniciar agora';
+                    btn.onclick = () => window.electron.installUpdate();
+                    prog.style.width = '100%';
+                    break;
+                case 'not-available':
+                    txt.textContent = 'Nenhuma atualização disponível.';
+                    setTimeout(() => setVisible(false), 1500);
+                    break;
+                case 'error':
+                    txt.textContent = 'Falha ao verificar/baixar atualização.';
+                    setTimeout(() => setVisible(false), 2000);
+                    break;
+            }
+        });
     }
 
 }

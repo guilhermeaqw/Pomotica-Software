@@ -41,27 +41,42 @@ function createWindow() {
   });
 }
 
+function sendUpdateStatus(payload) {
+  try { if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('update-status', payload); } catch (_) {}
+}
+
 function setupAutoUpdate() {
   autoUpdater.autoDownload = true;
+  autoUpdater.on('checking-for-update', () => sendUpdateStatus({ type: 'checking' }));
   autoUpdater.on('update-available', () => {
     if (tray) tray.setToolTip('Pomotica - Baixando atualização...');
+    sendUpdateStatus({ type: 'available' });
+  });
+  autoUpdater.on('update-not-available', () => {
+    if (tray) tray.setToolTip('Pomotica');
+    sendUpdateStatus({ type: 'not-available' });
   });
   autoUpdater.on('download-progress', (p) => {
     if (tray) tray.setToolTip(`Pomotica - Baixando (${Math.round(p.percent)}%)`);
+    sendUpdateStatus({ type: 'progress', percent: Math.round(p.percent), bytesPerSecond: p.bytesPerSecond });
   });
   autoUpdater.on('update-downloaded', () => {
     if (tray) tray.setToolTip('Pomotica - Atualização pronta');
+    sendUpdateStatus({ type: 'downloaded' });
     dialog.showMessageBox({
       type: 'info', buttons: ['Reiniciar agora', 'Depois'], defaultId: 0,
       title: 'Atualização', message: 'Uma atualização foi baixada. Deseja reiniciar para aplicar?'
-    }).then(res => {
-      if (res.response === 0) autoUpdater.quitAndInstall();
-    });
+    }).then(res => { if (res.response === 0) autoUpdater.quitAndInstall(); });
   });
-  autoUpdater.on('error', () => {
+  autoUpdater.on('error', (err) => {
     if (tray) tray.setToolTip('Pomotica');
+    sendUpdateStatus({ type: 'error', message: String(err && err.message || err) });
   });
 }
+
+// IPC para controle manual a partir do renderer
+ipcMain.handle('update-check', async () => { try { sendUpdateStatus({ type: 'checking' }); await autoUpdater.checkForUpdatesAndNotify(); return true; } catch { sendUpdateStatus({ type: 'error', message: 'Falha ao iniciar verificação' }); return false; } });
+ipcMain.handle('update-install', async () => { try { autoUpdater.quitAndInstall(); return true; } catch { return false; } });
 
 app.whenReady().then(() => {
   createWindow();
